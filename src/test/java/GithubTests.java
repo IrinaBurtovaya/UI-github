@@ -84,18 +84,6 @@ public class GithubTests extends TestBase {
     }
 
     @Test
-    @AllureId("11407")
-    @Tag("repeatedreg")
-    @DisplayName("Проверка повторной регистрации")
-    void doRepeatedRegistration() {
-        step("Вводим email уже зарегистрированного пользователя", () -> mainPage.EmailAddressField.
-                setValue(config.login()));
-        step("Кликаем кнопку Sign Up", () -> mainPage.signUpButton.click());
-        step("Проверяем текст ошибки", () -> mainPage.errorSignUpText.should(Condition.have(Condition.
-                text("Email is invalid or already taken"))));
-    }
-
-    @Test
     @AllureId("11408")
     @Tag("headers")
     @DisplayName("Проверка отображения логотипа и заголовков главной страницы")
