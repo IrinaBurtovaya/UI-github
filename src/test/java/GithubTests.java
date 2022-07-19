@@ -1,9 +1,11 @@
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import config.WebConfig;
+import io.qameta.allure.AllureId;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -16,10 +18,11 @@ public class GithubTests extends TestBase {
     MainPage mainPage = new MainPage();
     LoginPage loginPage = new LoginPage();
     SignUpPage signUpPage = new SignUpPage();
-    static WebConfig config = ConfigFactory.create(WebConfig.class, System.getProperties());
     String testEmail = "test5555@mail.ru";
 
     @Test
+    @AllureId("11403")
+    @Tag("short")
     @DisplayName("Проверка защищенности пароля при создании аккаунта, тест-кейс 'short'")
     void checkPasswordProtectionShort() {
         step("На странице создания аккаунта вводим тестовый email", () -> signUpPage
@@ -34,6 +37,8 @@ public class GithubTests extends TestBase {
     }
 
     @Test
+    @AllureId("11404")
+    @Tag("simple")
     @DisplayName("Проверка защищенности пароля при создании аккаунта, тест-кейс 'simple'")
     void checkPasswordProtectionSimple() {
         step("На странице создания аккаунта вводим тестовый email", () -> signUpPage
@@ -47,6 +52,8 @@ public class GithubTests extends TestBase {
     }
 
     @Test
+    @AllureId("11405")
+    @Tag("onlyletters")
     @DisplayName("Проверка защищенности пароля при создании аккаунта, тест-кейс 'only letters'")
     void checkPasswordProtectionOnlyLetters() {
         step("На странице создания аккаунта вводим тестовый email", () -> signUpPage
@@ -61,6 +68,8 @@ public class GithubTests extends TestBase {
     }
 
     @Test
+    @AllureId("11406")
+    @Tag("strong")
     @DisplayName("Проверка защищенности пароля при создании аккаунта, тест-кейс 'strong'")
     void checkPasswordProtectionStrong() {
         step("На странице создания аккаунта вводим тестовый email", () -> signUpPage
@@ -75,6 +84,20 @@ public class GithubTests extends TestBase {
     }
 
     @Test
+    @AllureId("11407")
+    @Tag("repeatedreg")
+    @DisplayName("Проверка повторной регистрации")
+    void doRepeatedRegistration() {
+        step("Вводим email уже зарегистрированного пользователя", () -> mainPage.EmailAddressField.
+                setValue(config.login()));
+        step("Кликаем кнопку Sign Up", () -> mainPage.signUpButton.click());
+        step("Проверяем текст ошибки", () -> mainPage.errorSignUpText.should(Condition.have(Condition.
+                text("Email is invalid or already taken"))));
+    }
+
+    @Test
+    @AllureId("11408")
+    @Tag("headers")
     @DisplayName("Проверка отображения логотипа и заголовков главной страницы")
     void checkHeaders() {
         step("Проверяем отображение лого", () -> Assertions.assertTrue(mainPage.icon.isDisplayed()));
@@ -91,6 +114,8 @@ public class GithubTests extends TestBase {
     }
 
     @Test
+    @AllureId("11409")
+    @Tag("search")
     @DisplayName("Проверка результатов поиска")
     void checkSearchResults() {
         step("На главной странице вводим слово для поиска", () -> {
@@ -105,6 +130,8 @@ public class GithubTests extends TestBase {
             "testEmail"
     })
     @ParameterizedTest(name = "Проверка неуспешной авторизации {0}")
+    @AllureId("11410")
+    @Tag("unsuccessfulauth")
     void doUnsuccessfulAuth(String testData) {
         step("На главной странице кликаем кнопку авторизации", () -> mainPage.signInButton.click());
 
@@ -113,15 +140,5 @@ public class GithubTests extends TestBase {
                 .signInButton.click());
         step("Проверяем, что сообщение об ошибке содержит текст 'Incorrect username or password.'",
                 () -> loginPage.errorText.shouldHave(Condition.text("Incorrect username or password.")));
-    }
-
-    @Test
-    @DisplayName("Проверка повторной регистрации")
-    void doRepeatedRegistration() {
-        step("Вводим email уже зарегистрированного пользователя", () -> mainPage.EmailAddressField.
-                setValue(config.login()));
-        step("Кликаем кнопку Sign Up", () -> mainPage.signUpButton.click());
-        step("Проверяем текст ошибки", () -> mainPage.errorSignUpText.should(Condition.have(Condition.
-                text("Email is invalid or already taken"))));
     }
 }

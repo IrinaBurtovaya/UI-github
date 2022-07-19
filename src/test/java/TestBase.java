@@ -17,7 +17,6 @@ import static io.qameta.allure.Allure.step;
 public class TestBase {
 
     static WebConfig config = ConfigFactory.create(WebConfig.class, System.getProperties());
-    static String selenoid = System.getProperty("selenoid", "selenoid.autotests.cloud/wd/hub");
 
     @BeforeAll
     public static void setUp() {
@@ -27,7 +26,11 @@ public class TestBase {
         Configuration.browserVersion = config.version();
         Configuration.browserSize = config.browserSize();
         Configuration.timeout = 10000;
-        //Configuration.remote = "https://" + config.selenoidLogin() + ":" + config.selenoidPassword() + "@" + selenoid;
+
+        if (config.remote() != null) {
+            Configuration.remote = config.remote();
+        }
+
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("enableVNC", true);
         capabilities.setCapability("enableVideo", true);

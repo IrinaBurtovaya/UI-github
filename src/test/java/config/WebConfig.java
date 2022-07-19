@@ -2,9 +2,8 @@ package config;
 
 import org.aeonbits.owner.Config;
 
-//@Config.Sources("classpath:config/${env}.properties")
-@Config.Sources("classpath:config/local.properties")
-//@Config.Sources("classpath:config/remote.properties")
+@Config.Sources("classpath:config/${env}.properties")
+
 public interface WebConfig extends Config {
 
     @Key("browser")
@@ -26,9 +25,9 @@ public interface WebConfig extends Config {
     @Key("login")
     String login();
 
-    @Key("selenoidLogin")
-    String selenoidLogin();
+    @Key("remote")
+    String remote();
 
-    @Key("selenoidPassword")
-    String selenoidPassword();
+
+
 }
