@@ -22,12 +22,6 @@ public interface WebConfig extends Config {
     @DefaultValue("https://github.com/")
     String baseUrl();
 
-    @Key("login")
-    String login();
-
     @Key("remote")
     String remote();
-
-
-
 }
